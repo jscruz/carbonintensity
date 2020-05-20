@@ -1,6 +1,6 @@
 repository:
-  description: "Sample Client lib."
-  homepage: https://pypi.org/project/sampleclient/
+  description: "Carbon Intensity client"
+  homepage: https://pypi.org/project/carbonintensity/
   private: false
   has_issues: true
   has_projects: false
