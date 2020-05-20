@@ -16,7 +16,7 @@ setup(
     packages=find_packages(),
     install_requires=["aiohttp"],
     setup_requires=["pytest-runner"],
-    tests_require=["pytest", "pytest-asyncio"],
+    tests_require=["aiohttp", "pytest", "pytest-asyncio"],
     classifiers=(
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
