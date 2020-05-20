@@ -57,3 +57,7 @@ python3 -m pip install -U carbonintensity
 [maintained]: https://img.shields.io/maintenance/yes/2020.svg
 
 <!-- links end -->
+
+## Licenses
+
+This work is based on [sampleclient](https://github.com/ludeeus/sampleclient): See [Original license](./licenses/sampleclient/LICENSE)
