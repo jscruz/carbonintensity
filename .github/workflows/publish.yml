@@ -21,7 +21,10 @@ jobs:
 
       - run: python3 -m black .
 
-      - run: python3 -m pytest
+      - name: Install project and test
+        run: |
+            python3 setup.py install
+            python3 setup.py test
 
       - uses: olegtarasov/get-tag@v2
         name: Set tag envronment variable
