@@ -1,6 +1,9 @@
 """Setup configuration."""
 from setuptools import setup, find_packages
 
+dependencies = ["aiohttp"]
+test_dependencies = ["pytest", "pytest-asyncio", "pytest-runner"] + dependencies
+
 
 with open("README.md", "r") as fh:
     README = fh.read()
@@ -14,9 +17,9 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/jscruz/carbonintensity",
     packages=find_packages(),
-    install_requires=["aiohttp"],
-    setup_requires=["pytest-runner"],
-    tests_require=["aiohttp", "pytest", "pytest-asyncio"],
+    install_requires=dependencies,
+    tests_require=test_dependencies,
+    extras_require={"test": test_dependencies},
     classifiers=(
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
