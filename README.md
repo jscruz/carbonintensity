@@ -36,8 +36,13 @@ An example of the function output can be found below:
    {
        "data":
         {
-              "current_period_from": "2020-05-20T10:00Z", "current_period_to": "2020-05-20T10:30Z",
-              "current_period_forecast":300, "current_period_index": "high", "lowest_period_from":"2020-05-21T14:00Z", "lowest_period_to":"2020-05-21T14:30Z", "lowest_period_forecast": 168,
+              "current_period_from": "2020-05-20T10:00Z",
+              "current_period_to": "2020-05-20T10:30Z",
+              "current_period_forecast":300,
+              "current_period_index": "high",
+              "lowest_period_from":"2020-05-21T14:00Z",
+              "lowest_period_to":"2020-05-21T14:30Z",
+              "lowest_period_forecast": 168,
               "lowest_period_index": "moderate",
               "postcode": "SW1"
         }
