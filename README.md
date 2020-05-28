@@ -65,4 +65,6 @@ python3 -m pip install -U carbonintensity
 
 ## Licenses
 
-This work is based on [sampleclient](https://github.com/ludeeus/sampleclient): See [Original license](./licenses/sampleclient/LICENSE)
+This work is based on the following:
+- [sampleclient](https://github.com/ludeeus/sampleclient): See [Original license](./licenses/sampleclient/LICENSE)
+- [Carbon Intensity API](https://carbonintensity.org.uk/): See [Terms and conditions](https://github.com/carbon-intensity/terms/)
