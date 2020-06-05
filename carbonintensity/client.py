@@ -17,7 +17,9 @@ class Client:
     def __str__(self):
         return "{ postcode: %s, headers: %s }" % (self.postcode, self.headers)
 
-    async def async_get_data(self, from_time=datetime.now()):
+    async def async_get_data(self, from_time=None):
+        if from_time is None:
+            from_time = datetime.now()
         request_url = (
             "https://api.carbonintensity.org.uk/regional/intensity/%s/fw24h/postcode/%s"
             % (from_time.strftime("%Y-%m-%dT%H:%MZ"), self.postcode)
