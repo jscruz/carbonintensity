@@ -15,7 +15,7 @@ jobs:
           python-version: "3.x"
 
       - name: Install dependencies
-        run: python -m pip install aiohttp black pytest pytest-asyncio
+        run: python -m pip install aiohttp numpy black pytest pytest-asyncio
 
       - run: python3 -m black .
 

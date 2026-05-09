@@ -1,15 +1,15 @@
 """Setup configuration."""
 from setuptools import setup, find_packages
 
-dependencies = ["aiohttp"]
+dependencies = ["aiohttp", "numpy"]
 test_dependencies = ["pytest", "pytest-asyncio"] + dependencies
 
 
 with open("README.md", "r") as fh:
     README = fh.read()
 setup(
-    name="carbonintensity",
-    version="0.4.0",
+    name="carbon_intensity",
+    version="0.3.0",
     author="Jorge Cruz Lambert",
     author_email="jscl@pm.me",
     description="Home Assistant Client library for Carbon Intensity API",
