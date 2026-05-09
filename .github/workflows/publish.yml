@@ -16,15 +16,13 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Install dependencies
-        run: python -m pip install aiohttp numpy black pytest pytest-asyncio build twine
+      - name: Install project and test dependencies
+        run: pip install -e ".[test]" black build twine
 
       - run: python3 -m black .
 
-      - name: Install project and test
-        run: |
-          pip install -e .
-          python3 -m pytest
+      - name: Run tests
+        run: python3 -m pytest
 
       - name: Publish to PyPi
         env:
