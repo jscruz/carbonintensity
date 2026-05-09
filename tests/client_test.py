@@ -48,11 +48,11 @@ async def test_request_data():
     assert isinstance(data["current_period_from"], date)
     assert isinstance(data["current_period_to"], date)
     assert isinstance(data["current_period_forecast"], int)
-    assert data["current_period_national_index"]  in ["moderate", "high", "low", "medium"]
+    assert data["current_period_national_index"] in ["very low", "low", "moderate", "high", "very high"]
     assert isinstance(data["current_period_national_forecast"], int)
-    assert data["current_period_index"] in ["moderate", "high", "low", "medium"]
+    assert data["current_period_index"] in ["very low", "low", "moderate", "high", "very high"]
     assert isinstance(data["lowest_period_from"], date)
     assert isinstance(data["lowest_period_to"], date)
     assert isinstance(data["lowest_period_forecast"], int)
-    assert data["lowest_period_index"] in ["moderate", "high", "low", "medium"]
+    assert data["lowest_period_index"] in ["very low", "low", "moderate", "high", "very high"]
     assert data["postcode"] == "BH1"
