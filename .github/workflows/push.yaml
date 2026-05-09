@@ -8,18 +8,19 @@ jobs:
     runs-on: ubuntu-latest
     name: Check push
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v4
       - name: Set up Python
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v5
         with:
           python-version: "3.x"
 
       - name: Install dependencies
-        run: python -m pip install setuptools wheel black pytest
+        run: python -m pip install aiohttp black pytest pytest-asyncio
 
       - run: python3 -m black .
 
-      - name: Install project and test
-        run: |
-            python3 setup.py install
-            python3 setup.py test
+      - name: Install project
+        run: pip install -e .
+
+      - name: Run tests
+        run: python3 -m pytest

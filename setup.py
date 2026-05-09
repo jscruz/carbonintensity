@@ -16,10 +16,8 @@ setup(
     long_description=README,
     long_description_content_type="text/markdown",
     url="https://github.com/jscruz/carbonintensity",
-    packages=find_packages(),
+    packages=find_packages(exclude=["custom_components*", "tests*"]),
     install_requires=dependencies,
-    setup_requires=["pytest-runner"],
-    tests_require=test_dependencies,
     extras_require={"test": test_dependencies},
     classifiers=[
         "Programming Language :: Python :: 3",
