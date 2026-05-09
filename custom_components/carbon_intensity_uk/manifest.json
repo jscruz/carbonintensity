@@ -1,0 +1,10 @@
+{
+  "domain": "carbon_intensity_uk",
+  "name": "Carbon Intensity UK",
+  "version": "0.1.0",
+  "config_flow": true,
+  "documentation": "https://github.com/jscruz/sensor.carbon_intensity_uk",
+  "issue_tracker": "https://github.com/jscruz/sensor.carbon_intensity_uk/issues",
+  "requirements": ["aiohttp", "carbonintensity"],
+  "codeowners": ["@jscruz"]
+}
