@@ -3,7 +3,7 @@ requires = ["setuptools>=75.3"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "carbon_intensity"
+name = "carbon_intensity_uk"
 version = "0.4.0"
 description = "Home Assistant Client library for Carbon Intensity API"
 readme = "README.md"

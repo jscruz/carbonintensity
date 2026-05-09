@@ -5,6 +5,6 @@
   "config_flow": true,
   "documentation": "https://github.com/jscruz/sensor.carbon_intensity_uk",
   "issue_tracker": "https://github.com/jscruz/sensor.carbon_intensity_uk/issues",
-  "requirements": ["aiohttp", "numpy", "carbon_intensity"],
+  "requirements": ["aiohttp", "numpy", "carbon_intensity_uk"],
   "codeowners": ["@jscruz"]
 }
