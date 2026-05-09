@@ -10,32 +10,26 @@ jobs:
     runs-on: ubuntu-latest
     name: Deploy to PyPi
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v4
       - name: Set up Python
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v5
         with:
           python-version: "3.x"
 
       - name: Install dependencies
-        run: python -m pip install setuptools wheel twine black pytest
+        run: python -m pip install aiohttp black pytest pytest-asyncio build twine
 
       - run: python3 -m black .
 
       - name: Install project and test
         run: |
-            python3 setup.py install
-            python3 setup.py test
+          pip install -e .
+          python3 -m pytest
 
-      - uses: olegtarasov/get-tag@v2.1
-        name: Set tag envronment variable
-
-      - name: Set version number
-        run: |
-          sed -i "s/version=\"0.0.0\"/version=\"$GIT_TAG_NAME\"/" ${{github.workspace}}/setup.py
       - name: Publish to PyPi
         env:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
         run: |
-          python setup.py sdist bdist_wheel
+          python -m build
           twine upload dist/*
