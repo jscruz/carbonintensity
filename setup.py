@@ -9,7 +9,7 @@ with open("README.md", "r") as fh:
     README = fh.read()
 setup(
     name="carbonintensity",
-    version="0.3.0",
+    version="0.4.0",
     author="Jorge Cruz Lambert",
     author_email="jscl@pm.me",
     description="Home Assistant Client library for Carbon Intensity API",
