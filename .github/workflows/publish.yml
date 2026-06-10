@@ -11,6 +11,9 @@ jobs:
     name: Deploy to PyPi
     steps:
       - uses: actions/checkout@v4
+        with:
+          # setuptools-scm needs full history and tags to derive the version
+          fetch-depth: 0
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
