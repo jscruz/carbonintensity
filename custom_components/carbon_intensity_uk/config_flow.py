@@ -1,11 +1,19 @@
 """Adds config flow for Carbon Intensity."""
+import asyncio
+import logging
+
+import aiohttp
 import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.core import callback
-import logging
+
 _LOGGER = logging.getLogger(__name__)
 
-from carbonintensity.client import Client as CarbonIntentisityApi
+from carbonintensity.client import (
+    CarbonIntensityApiError,
+    Client as CarbonIntentisityApi,
+    InvalidPostcodeError,
+)
 
 from custom_components.carbon_intensity_uk.const import (  # pylint: disable=unused-import
     CONF_POSTCODE,
@@ -31,15 +39,16 @@ class CarbonIntensityFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
         self._errors = {}
 
         if user_input is not None:
-            valid = await self._test_credentials(user_input[CONF_POSTCODE])
-            if valid:
+            client = CarbonIntentisityApi(user_input[CONF_POSTCODE])
+            error = await self._async_validate_postcode(client)
+            if error is None:
                 _LOGGER.debug("Input is valid")
+                # Store the normalized outward code, not the raw input.
                 return self.async_create_entry(
-                    title=user_input[CONF_POSTCODE], data=user_input
+                    title=client.postcode, data={CONF_POSTCODE: client.postcode}
                 )
-            else:
-                _LOGGER.debug("Input not valid")
-                self._errors["base"] = "auth"
+            _LOGGER.debug("Input not valid: %s", error)
+            self._errors["base"] = error
 
             return await self._show_config_form(user_input)
 
@@ -58,17 +67,23 @@ class CarbonIntensityFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
             errors=self._errors,
         )
 
-    async def _test_credentials(self, postcode):
-        """Return true if credentials is valid."""
+    async def _async_validate_postcode(self, client):
+        """Return an error key if the postcode cannot be used, else None."""
         try:
-            client = CarbonIntentisityApi(postcode)
             await client.async_get_data()
-            _LOGGER.debug("Input successfully")
-            return True
-        except Exception as exception:  # pylint: disable=broad-except
+            return None
+        except InvalidPostcodeError as exception:
             _LOGGER.debug(exception)
-        _LOGGER.debug("Oops! Input failed!")
-        return False
+            return "invalid_postcode"
+        except (aiohttp.ClientError, asyncio.TimeoutError) as exception:
+            _LOGGER.debug(exception)
+            return "cannot_connect"
+        except CarbonIntensityApiError as exception:
+            _LOGGER.debug(exception)
+            return "cannot_connect"
+        except Exception:  # pylint: disable=broad-except
+            _LOGGER.exception("Unexpected error validating postcode")
+            return "unknown"
 
 
 class CarbonIntensityOptionsFlowHandler(config_entries.OptionsFlow):
