@@ -2,7 +2,7 @@
 
 <!-- badges start -->
 
-[![Maintained][Maintained]](#)
+[![PyPi version](https://badgen.net/pypi/v/carbon_intensity_uk/)](https://pypi.org/project/carbon_intensity_uk)
 [![BuyMeCoffee][buymecoffeebadge]][buymecoffeelink]
 
 <!-- badges end -->
