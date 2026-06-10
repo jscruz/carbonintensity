@@ -1,6 +1,7 @@
 """Client."""
 from datetime import datetime, timezone
 import logging
+import re
 import aiohttp
 import numpy as np
 
@@ -35,6 +36,29 @@ FOSSIL_FUEL_SOURCES = ["gas", "coal", "oil"]
 _REQUEST_TIMEOUT = aiohttp.ClientTimeout(total=10)
 
 
+class CarbonIntensityApiError(Exception):
+    """Raised when the Carbon Intensity API returns an unusable response."""
+
+
+class InvalidPostcodeError(CarbonIntensityApiError):
+    """Raised when the API cannot match the supplied postcode to a region."""
+
+# Full UK postcode without spaces: outward code (e.g. SW1A) + inward code (1AA).
+_FULL_POSTCODE = re.compile(r"([A-Z]{1,2}\d[A-Z\d]?)\d[A-Z]{2}")
+
+
+def normalize_postcode(postcode):
+    """Reduce user postcode input to the outward code the API expects.
+
+    The regional API only matches outward codes (e.g. "SW1A", "RG41");
+    full postcodes, lowercase input, or stray whitespace make it return
+    an empty (null) response.
+    """
+    compact = postcode.strip().upper().replace(" ", "")
+    match = _FULL_POSTCODE.fullmatch(compact)
+    return match.group(1) if match else compact
+
+
 def _get_index(intensity, thresholds):
     """Return the intensity category string for a given gCO2/kWh value."""
     if intensity < thresholds[0]:
@@ -52,7 +76,7 @@ class Client:
     """Carbon Intensity API Client."""
 
     def __init__(self, postcode):
-        self.postcode = postcode
+        self.postcode = normalize_postcode(postcode)
         self.headers = {"Accept": "application/json"}
         _LOGGER.debug(str(self))
 
@@ -77,6 +101,11 @@ class Client:
             async with session.get(request_url, headers=self.headers) as resp:
                 resp.raise_for_status()
                 json_response = await resp.json()
+            # The API answers 200 with a body of "null" for unmatched postcodes.
+            if not json_response or "data" not in json_response:
+                raise InvalidPostcodeError(
+                    "No region found for postcode %s" % self.postcode
+                )
             async with session.get(request_url_national, headers=self.headers) as resp:
                 resp.raise_for_status()
                 json_response_national = await resp.json()
@@ -96,7 +125,10 @@ def generate_response(json_response, json_response_national):
     if len(data) > 96:
         data = data[:96]
     if len(data) < 48:
-        return {"error": "malformed data"}
+        raise CarbonIntensityApiError(
+            "Malformed response: expected at least 48 half-hour periods, got %d"
+            % len(data)
+        )
     # Keep even number of half-hour slots for clean hourly pairing.
     if len(data) % 2 == 1:
         data = data[:-1]

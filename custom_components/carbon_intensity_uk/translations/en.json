@@ -1,0 +1,28 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Carbon Intensity UK",
+        "description": "Enter a UK postcode. Only the first part is needed (for example SW1A or RG41), but a full postcode such as SW1A 1AA also works.",
+        "data": {
+          "postcode": "UK postcode"
+        }
+      }
+    },
+    "error": {
+      "invalid_postcode": "Postcode not recognised. Use a UK postcode such as SW1A, RG41 or SW1A 1AA.",
+      "cannot_connect": "Could not retrieve data from the Carbon Intensity API. Check your connection and try again.",
+      "unknown": "Unexpected error. Check the Home Assistant logs for details."
+    }
+  },
+  "options": {
+    "step": {
+      "user": {
+        "title": "Carbon Intensity UK options",
+        "data": {
+          "sensor": "Enable sensor platform"
+        }
+      }
+    }
+  }
+}

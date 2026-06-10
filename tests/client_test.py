@@ -1,4 +1,10 @@
-from carbonintensity.client import Client, generate_response
+from carbonintensity.client import (
+    CarbonIntensityApiError,
+    Client,
+    InvalidPostcodeError,
+    generate_response,
+    normalize_postcode,
+)
 import pytest
 from datetime import datetime, timezone, date
 import os
@@ -16,6 +22,25 @@ def test_string_format():
     client = Client("BH1")
     assert client.postcode == "BH1"
     assert client.headers == {"Accept": "application/json"}
+
+
+@pytest.mark.parametrize(
+    "raw,expected",
+    [
+        ("BH1", "BH1"),  # outward code passes through
+        ("bh1", "BH1"),  # lowercase
+        (" BH1 ", "BH1"),  # surrounding whitespace
+        ("BH1 1AA", "BH1"),  # full postcode with space
+        ("BH11AA", "BH1"),  # full postcode without space
+        ("SW1A 1AA", "SW1A"),  # A9A-style outward code
+        ("EC1A 1BB", "EC1A"),  # AA9A-style outward code
+        ("M1 1AE", "M1"),  # single-letter area
+        ("CR2 6XH", "CR2"),
+    ],
+)
+def test_normalize_postcode(raw, expected):
+    assert normalize_postcode(raw) == expected
+    assert Client(raw).postcode == expected
 
 
 def test_generate_response():
@@ -68,6 +93,30 @@ def test_generate_response():
     assert isinstance(first["intensity"], float)
     assert first["index"] in VALID_INDEXES
     assert isinstance(first["optimal"], bool)
+
+
+def test_generate_response_raises_on_short_data():
+    with open(TESTRESPONSE_FILENAME) as json_file, open(
+        TESTRESPONSENATIONAL_FILENAME
+    ) as json_national_file:
+        json_response = json.load(json_file)
+        json_national_response = json.load(json_national_file)
+
+    json_response["data"]["data"] = json_response["data"]["data"][:10]
+    with pytest.raises(CarbonIntensityApiError):
+        generate_response(json_response, json_national_response)
+
+
+def test_invalid_postcode_error_is_api_error():
+    # Config flow relies on this hierarchy to map errors to UI messages.
+    assert issubclass(InvalidPostcodeError, CarbonIntensityApiError)
+
+
+@pytest.mark.asyncio
+async def test_request_data_invalid_postcode():
+    # The API returns 200 with a "null" body for unmatched outward codes.
+    with pytest.raises(InvalidPostcodeError):
+        await Client("ZZ99").async_get_data()
 
 
 @pytest.mark.asyncio
