@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools>=75.3"]
+requires = ["setuptools>=75.3", "setuptools-scm>=8"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "carbon_intensity_uk"
-version = "1.0.0"
+dynamic = ["version"]
 description = "Home Assistant Client library for Carbon Intensity API"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -28,6 +28,11 @@ Issues = "https://github.com/jscruz/carbonintensity/issues"
 
 [tool.setuptools.packages.find]
 exclude = ["custom_components*", "tests*"]
+
+[tool.setuptools_scm]
+# Version comes from the latest git tag (e.g. tag 1.0.1 -> version 1.0.1).
+# Used when building from a checkout without git metadata or tags:
+fallback_version = "0.0.0"
 
 [tool.pytest.ini_options]
 addopts = "--verbose"
