@@ -1,4 +1,5 @@
 """Sensor platform for carbon intensity UK."""
+
 from custom_components.carbon_intensity_uk.const import (
     DEFAULT_NAME,
     DOMAIN,

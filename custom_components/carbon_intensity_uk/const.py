@@ -1,4 +1,5 @@
 """Constants for carbon intensity."""
+
 # Base component constants
 NAME = "Carbon Intensity UK"
 DOMAIN = "carbon_intensity_uk"

@@ -1,4 +1,5 @@
 """Adds config flow for Carbon Intensity."""
+
 import asyncio
 import logging
 
@@ -63,7 +64,11 @@ class CarbonIntensityFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
         """Show the configuration form to edit location data."""
         return self.async_show_form(
             step_id="user",
-            data_schema=vol.Schema({vol.Required(CONF_POSTCODE): str,}),
+            data_schema=vol.Schema(
+                {
+                    vol.Required(CONF_POSTCODE): str,
+                }
+            ),
             errors=self._errors,
         )
 

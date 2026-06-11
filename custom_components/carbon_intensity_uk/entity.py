@@ -1,4 +1,5 @@
 """CarbonIntensityEntity class"""
+
 from homeassistant.helpers import entity
 
 from custom_components.carbon_intensity_uk.const import DOMAIN, VERSION, NAME

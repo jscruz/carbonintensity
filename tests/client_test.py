@@ -44,9 +44,10 @@ def test_normalize_postcode(raw, expected):
 
 
 def test_generate_response():
-    with open(TESTRESPONSE_FILENAME) as json_file, open(
-        TESTRESPONSENATIONAL_FILENAME
-    ) as json_national_file:
+    with (
+        open(TESTRESPONSE_FILENAME) as json_file,
+        open(TESTRESPONSENATIONAL_FILENAME) as json_national_file,
+    ):
         json_response = json.load(json_file)
         json_national_response = json.load(json_national_file)
         response = generate_response(json_response, json_national_response)
@@ -96,9 +97,10 @@ def test_generate_response():
 
 
 def test_generate_response_raises_on_short_data():
-    with open(TESTRESPONSE_FILENAME) as json_file, open(
-        TESTRESPONSENATIONAL_FILENAME
-    ) as json_national_file:
+    with (
+        open(TESTRESPONSE_FILENAME) as json_file,
+        open(TESTRESPONSENATIONAL_FILENAME) as json_national_file,
+    ):
         json_response = json.load(json_file)
         json_national_response = json.load(json_national_file)
 

@@ -4,6 +4,7 @@ Custom integration to integrate UK Carbon Intensity API with Home Assistant.
 For more details about this integration, please refer to
 https://github.com/jscruz/sensor.carbon_intensity_uk
 """
+
 import asyncio
 import logging
 from datetime import timedelta
@@ -67,7 +68,10 @@ class CarbonIntensityDataUpdateCoordinator(DataUpdateCoordinator):
         self.platforms = []
 
         super().__init__(
-            hass, _LOGGER, name=DOMAIN, update_interval=SCAN_INTERVAL,
+            hass,
+            _LOGGER,
+            name=DOMAIN,
+            update_interval=SCAN_INTERVAL,
         )
 
     async def _async_update_data(self):

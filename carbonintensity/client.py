@@ -1,4 +1,5 @@
 """Client."""
+
 from datetime import datetime, timezone
 import logging
 import re
@@ -42,6 +43,7 @@ class CarbonIntensityApiError(Exception):
 
 class InvalidPostcodeError(CarbonIntensityApiError):
     """Raised when the API cannot match the supplied postcode to a region."""
+
 
 # Full UK postcode without spaces: outward code (e.g. SW1A) + inward code (1AA).
 _FULL_POSTCODE = re.compile(r"([A-Z]{1,2}\d[A-Z\d]?)\d[A-Z]{2}")
@@ -252,20 +254,20 @@ def generate_response(json_response, json_response_national):
             "optimal_window_index": _get_index(
                 average_intensity_24h[best_24h], thresholds
             ),
-            "optimal_window_48_from": hours_start[best_48h + 24]
-            if two_day_forecast
-            else None,
-            "optimal_window_48_to": hours_end[best_48h + 3 + 24]
-            if two_day_forecast
-            else None,
-            "optimal_window_48_forecast": float(average_intensity_48h[best_48h])
-            if two_day_forecast
-            else None,
-            "optimal_window_48_index": _get_index(
-                average_intensity_48h[best_48h], thresholds
-            )
-            if two_day_forecast
-            else None,
+            "optimal_window_48_from": (
+                hours_start[best_48h + 24] if two_day_forecast else None
+            ),
+            "optimal_window_48_to": (
+                hours_end[best_48h + 3 + 24] if two_day_forecast else None
+            ),
+            "optimal_window_48_forecast": (
+                float(average_intensity_48h[best_48h]) if two_day_forecast else None
+            ),
+            "optimal_window_48_index": (
+                _get_index(average_intensity_48h[best_48h], thresholds)
+                if two_day_forecast
+                else None
+            ),
             "unit": "gCO2/kWh",
             "forecast": hourly_forecast,
             "postcode": postcode,
