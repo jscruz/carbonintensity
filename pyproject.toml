@@ -31,6 +31,8 @@ exclude = ["custom_components*", "tests*"]
 
 [tool.setuptools_scm]
 # Version comes from the latest git tag (e.g. tag 1.0.1 -> version 1.0.1).
+# PyPI rejects local version identifiers (1.0.1+g<hash>), so never emit them:
+local_scheme = "no-local-version"
 # Used when building from a checkout without git metadata or tags:
 fallback_version = "0.0.0"
 

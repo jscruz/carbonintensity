@@ -20,7 +20,7 @@ jobs:
       - name: Install project and test dependencies
         run: pip install -e ".[test]" black
 
-      - run: python3 -m black .
+      - run: python3 -m black --check .
 
       - name: Run tests
         run: python3 -m pytest

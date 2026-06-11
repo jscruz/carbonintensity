@@ -22,7 +22,9 @@ jobs:
       - name: Install project and test dependencies
         run: pip install -e ".[test]" black build twine
 
-      - run: python3 -m black .
+      # Check only — reformatting here would dirty the tree and make
+      # setuptools-scm produce a dev version instead of the tag version.
+      - run: python3 -m black --check .
 
       - name: Run tests
         run: python3 -m pytest
